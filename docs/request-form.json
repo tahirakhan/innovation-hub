@@ -1,0 +1,171 @@
+{
+Voice Input	
+"supplier name": "5284575",							-> create a supplier with name e.g. "eletronices 1"
+"quoteItems": [
+		{
+			"index": "1",									-> calculate using index item
+			"description": "desc",
+			"qty": 1,
+			"uom": "EA",									-> always EA
+			"deliveryDate": 1576609200000,
+			"itemType": "product",							-> always product
+			"acceptedForPR": true,							-> always true
+			"service": false								-> always false
+		}
+	]
+}
+
+User Info
+	"unitId": "2",											
+	"requesterId": "9",										
+	"requesterName": "asad ullah emp",					
+	"requesterEmail": "asad.ullah+emp@vroozi.com",
+	"lastUpdatedUserId": "9",
+	"deleted": false,	
+System Input
+	"buyerId": "312",
+	"buyerName": "Abhishek Buyer",
+	"createdDate": 1576483411011,
+	"lastUpdatedDate": 1576483411011,
+	"requestNumber": "RF4000000106",						-> get using sequence number	
+	"status": "DRAFT",
+	"requestName": "request name",
+	"suppliers": [
+		{
+			"externalId": "",
+			"companyId": "10620",
+			"companyName": "00 - Asad Ullah",
+			"vendorId": "Zain",
+			"address1": "MM ALAM ROAD",
+			"address2": "",
+			"state": "PA",
+			"country": "167",
+			"dunsNumber": "",
+			"unitId": "2",
+			"punchOut": false,
+			"minOrder": "10",
+			"includeSupplierCard": true,
+			"disableBrowse": false,
+			"currencyCode": "AED",
+			"defaultVendorId": "Zain",
+			"phone": "+1 (212) 315-5445",
+			"fax": "",
+			"contactName": "Zain",
+			"email": "notifyvroozi@gmail.com",
+			"city": "UNIVERSITY PK",
+			"zip": "16802-1503",
+			"language": "en",
+			"dateFormat": "1",
+			"decimalNotation": "1",
+			"timeZone": "-12:00",
+			"createdBy": "notifyvroozi@gmail.com",
+			"createdOn": 1531480101044,
+			"active": true,
+			"assignedContentViews": [
+				0
+			],
+			"rowsPerPage": 10,
+			"defaultVendorIdCaps": "ZAIN",
+			"displayName": "",
+			"website": "",
+			"administrativeNotes": "",
+			"notesToUser": "",
+			"workExtension": "",
+			"internalContact": "",
+			"lastUpdatedInfo": "",
+			"sdmSupplier": false,
+			"businessInfo": {
+				"companyDetails": "",
+				"supplierAttributes": [],
+				"categories": [],
+				"searchKeywords": [],
+				"attachments": [],
+				"locations": [],
+				"serviceArea": "",
+				"sustainabilityNotes": ""
+			},
+			"contractInfo": {
+				"attachments": [],
+				"comments": ""
+			},
+			"insuranceInfo": {
+				"association": null,
+				"datePropInsurToSuppliers": null,
+				"dateLiabInsurToSuppliers": null,
+				"attachments": []
+			},
+			"updatedDate": 1562830041027,
+			"approverIds": [
+				"546"
+			],
+			"supplierAttributePairs": null,
+			"systemVendorIds": null,
+			"companyUserIds": null,
+			"supplierAdmins": null,
+			"uniqueSupplierId": "5284575",
+			"buyRoute": false,
+			"internalCatalogs": [],
+			"externalCatalogs": [],
+			"sendPurchaseOrdersBy": "cxml",
+			"checked": null,
+			"catalogSupplier": true,
+			"nonCatalogSupplier": true,
+			"additionalName1": null,
+			"companyCode": null,
+			"deleted": false,
+			"cxmlDetails": {
+				"fromDomain": "",
+				"fromIdentity": "",
+				"toDomain": "",
+				"toIdentity": "",
+				"senderDomain": "",
+				"senderIdentity": "",
+				"sharedSecret": "",
+				"orderSubmissionUrl": "",
+				"extrinsics": []
+			},
+			"goodReceiptThresholdAmount": 0,
+			"goodsReceiptRequired": true,
+			"ersEnabled": false,
+			"singleSourceSupplier": false,
+			"automaticPRApproval": false,
+			"autoApprovalThreshold": 0,
+			"outputEmail": "notifyvroozi@gmail.com",
+			"poAckSupported": false,
+			"invoiceReceiptAllowed": false,
+			"federalTaxId": "",
+			"taxDisabled": false,
+			"accessToSupplierPortalAllowed": false,
+			"supplierLeadTimeFrequency": "NO_OF_DAYS",
+			"leadTimeValue": 2,
+			"companyNameCaps": "00 - ASAD ULLAH",
+			"contacts": [
+				{
+					"name": "Zain",
+					"locations": []
+				}
+			],
+			"poChangeRequest": false,
+			"poAttachmentsAllowed": false,
+			"address": {
+				"addressName": "00 - Asad Ullah",
+				"companyName": "00 - Asad Ullah",
+				"street": "MM ALAM ROAD",
+				"street2": "",
+				"city": "UNIVERSITY PK",
+				"postalCode": "16802-1503",
+				"state": "PA",
+				"country": "167",
+				"phone": "+1 (212) 315-5445",
+				"archived": false,
+				"companyAddress": false,
+				"selected": false,
+				"active": false,
+				"admin": false,
+				"email": "notifyvroozi@gmail.com",
+			},
+			"favorite": false,
+			"minOrderValue": 10
+		}
+	],
+}
