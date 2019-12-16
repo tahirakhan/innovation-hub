@@ -12,7 +12,10 @@ app.use(bodyParser.json());
 app.get("/", (req, res) => res.send("Hello World!"));
 
 app.post("/", (req, res) => {
-  console.log("Post Request received");
+  console.log(req.body);
+
+  var itemName = req.body.itemName;
+
   res.send(req.body);
 });
 
