@@ -3,8 +3,7 @@ const express = require("express");
 var bodyParser = require("body-parser");
 var util = require("util");
 const app = express();
-<<<<<<< HEAD
-const port = 3000;
+const port = 9001;
 const dbUrl = 'mongodb://vrooziadmin:0vr00zi009@127.0.0.1:27017';
 const mongoClient = require('mongodb').MongoClient;
 
@@ -24,19 +23,14 @@ mongoClient.connect('mongodb://vrooziadmin:0vr00zi009@127.0.0.1:27017', {useNewU
     });
   }
 });
-=======
-const port = 9001;
->>>>>>> 27560a7771cb7f3d56c3930f82e5f9ccdbb340e7
 
 // parse application/x-www-form-urlencoded
 app.use(bodyParser.urlencoded({ extended: false }));
-
 // parse application/json
 app.use(bodyParser.json());
 
 app.get("/", (req, res) => res.send("Hello World!"));
 
-<<<<<<< HEAD
 function findUser(userfirstName, userlastName, userCode, db, res){
   db.collection("user").find({"firstName":userfirstName, "lastName":userlastName}).toArray(function(err, results) {
     if (results.length == 0) {
@@ -50,7 +44,6 @@ function findUser(userfirstName, userlastName, userCode, db, res){
     }
   });
 }
-=======
 app.post("/", (req, res) => {
   console.log(req.body);
 
@@ -58,6 +51,5 @@ app.post("/", (req, res) => {
 
   res.send(req.body);
 });
->>>>>>> 27560a7771cb7f3d56c3930f82e5f9ccdbb340e7
 
 app.listen(port, () => console.log(`Example app listening on port ${port}!`));
