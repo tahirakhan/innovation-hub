@@ -2,37 +2,45 @@
 const express = require("express");
 var bodyParser = require("body-parser");
 var util = require("util");
+var database;
+
 const app = express();
+app.use(bodyParser.urlencoded({ extended: false }));
+app.use(bodyParser.json());
+
 const port = 9001;
 const dbUrl = 'mongodb://vrooziadmin:0vr00zi009@127.0.0.1:27017';
 const mongoClient = require('mongodb').MongoClient;
-
-mongoClient.connect('mongodb://vrooziadmin:0vr00zi009@127.0.0.1:27017', {useNewUrlParser: true}, function(err, client){
+mongoClient.connect(dbUrl, {useNewUrlParser: true}, function(err, client){
   console.log("connecting db");
   if(err) {
     throw err;
   } else {
     console.log("connected");
-    app.post("/", (req, res) => {
-      const database = client.db("vroozi");
-      var firstName = req.body.firstName;
-      var lastName = req.body.lastName;
-      var userCode  = req.body.userCode;
-      findUser(firstName, lastName, userCode, database, res);
-
-    });
+    database = client.db("vroozi");
   }
-});
+})
 
-// parse application/x-www-form-urlencoded
-app.use(bodyParser.urlencoded({ extended: false }));
-// parse application/json
-app.use(bodyParser.json());
+var appconstants = require('./appconstants');
 
 app.get("/", (req, res) => res.send("Hello World!"));
 
-function findUser(userfirstName, userlastName, userCode, db, res){
-  db.collection("user").find({"firstName":userfirstName, "lastName":userlastName}).toArray(function(err, results) {
+app.post("/", (req, res) => {
+  var intent = req.body.queryResult.intent.displayName;
+  console.log("intent:" + intent);
+  if (intent==appconstants.USER_AUTHENTICATION) {
+    findUser(req.body.firstName, req.body.pin, res);
+  } else if (intent==appconstants.CREATE_REQUEST) {
+    createRequest(req, res);
+  } else {
+    console.log("no intent matched");
+    res.send("no intent matched.");
+  }
+});
+
+
+function findUser(firstName, pin, res){
+  database.collection("user").find({"firstName":firstName, "pin":pin}).toArray(function(err, results) {
     if (results.length == 0) {
       res.statusCode = 404;
       res.setHeader('Content-Type', 'application/json');
@@ -44,12 +52,19 @@ function findUser(userfirstName, userlastName, userCode, db, res){
     }
   });
 }
-app.post("/", (req, res) => {
-  console.log(req.body);
 
-  var itemName = req.body.itemName;
-
-  res.send(req.body);
-});
+function createRequest(req, res){
+  database.collection("user").find({"firstName":firstName, "pin":pin}).toArray(function(err, results) {
+    if (results.length == 0) {
+      res.statusCode = 404;
+      res.setHeader('Content-Type', 'application/json');
+      res.send("you are not authorized to login");
+    } else {
+      res.statusCode = 200;
+      res.setHeader('Content-Type', 'application/plain');
+      res.send(JSON.stringify(results));
+    }
+  });
+}
 
 app.listen(port, () => console.log(`Example app listening on port ${port}!`));
