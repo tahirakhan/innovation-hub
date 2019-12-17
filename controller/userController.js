@@ -12,7 +12,7 @@ router.post("/authenticateUser", (req, res) => {
 function findUser(firstName, smartPin, res){
   appconstants.DATABASE.collection("user").findOne({"firstName":firstName, "smartPin":smartPin}, function(err, result) {
     if (result == null) {
-      res.statusCode = 401;
+      res.statusCode = 200;
       res.setHeader('Content-Type', 'application/json');
       res.send({"status": 401});
     } else {
