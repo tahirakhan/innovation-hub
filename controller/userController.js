@@ -12,13 +12,14 @@ router.post("/authenticateUser", (req, res) => {
 function findUser(firstName, smartPin, res){
   appconstants.DATABASE.collection("user").findOne({"firstName":firstName, "smartPin":smartPin}, function(err, result) {
     if (result == null) {
-      res.statusCode = 404;
+      res.statusCode = 200;
       res.setHeader('Content-Type', 'application/json');
       res.send("you are not authorized to login");
     } else {
       res.statusCode = 200;
       res.setHeader('Content-Type', 'application/plain');
-      res.send(JSON.stringify(result.userId));
+      var userData = {"userId": result.userId, "status": 200, "name": result.fullName};
+      res.send(JSON.stringify(userData));
     }
   });
 }
