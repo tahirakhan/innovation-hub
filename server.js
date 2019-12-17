@@ -28,6 +28,9 @@ app.use('/faq',faqController);
 const userController = require('./controller/userController');
 app.use('/user',userController);
 
+const rfqController = require('./controller/rfqController');
+app.use('/rfq', rfqController);
+
 //Request Controller
 //Action 1 -> create request
 //Action 2 -> fetch pending requests

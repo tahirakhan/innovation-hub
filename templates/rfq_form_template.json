@@ -1,0 +1,37 @@
+{
+    "_class" : "com.vroozi.api.requests.model.QuoteRequestForm",
+    "requesterId" : null,
+    "unitId" : null,
+    "requestNumber" : null,
+    "requestName" : "RFRequestNumber",
+    "createdDate" : null,
+    "lastUpdatedDate" : null,
+    "submittedDate" : null,
+    "requesterName" : null,
+    "requesterEmail" : null,
+    "requesterPhone" : "",
+    "buyerId" : "312",
+    "buyerName" : "Zain Imran",
+    "buyerEmail" : "zain.imran+approver@vroozi.com",
+    "status" : "SUBMITTED",
+    "quoteItems" : [
+    {
+    "index" : "1",
+    "description" : null, 
+    "qty" : null,
+    "uom" : "EA",
+    "deliveryDate" : null,
+    "isService" : false,
+    "deleted" : false,
+    "shippingCharge" : "0",
+    "taxValue" : "0",
+    "attachments" : [],
+    "splitAccountAssignment" : "none",
+    "itemType" : "product",
+    "acceptedForPR" : true
+    }
+    ],
+    "deleted" : false,
+    "attachments" : [],
+    "lastUpdatedUserId" : "9"
+}
