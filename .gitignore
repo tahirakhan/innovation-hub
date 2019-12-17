@@ -102,3 +102,10 @@ dist
 
 # TernJS port file
 .tern-port
+innovation-hub.iml
+.idea/workspace.xml
+.idea/vcs.xml
+.idea/modules.xml
+.idea/misc.xml
+.idea/innovation-hub.iml
+docs/~$alogue Training documentation.docx

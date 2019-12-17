@@ -1,9 +1,8 @@
-
 const express = require("express");
 var bodyParser = require("body-parser");
 var util = require("util");
-var database;
 
+var appconstants = require('./appconstants');
 const app = express();
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json());
@@ -17,54 +16,44 @@ mongoClient.connect(dbUrl, {useNewUrlParser: true}, function(err, client){
     throw err;
   } else {
     console.log("connected");
-    database = client.db("vroozi");
+    appconstants.DATABASE = client.db("vroozi");
   }
 })
 
-var appconstants = require('./appconstants');
 
-app.get("/", (req, res) => res.send("Hello World!"));
+//declare controllers and binding here
+//FAQ Controller
+const faqController = require('./controller/faqController');
+app.use('/faq',faqController);
+const userController = require('./controller/userController');
+app.use('/user',userController);
 
-app.post("/", (req, res) => {
-  var intent = req.body.queryResult.intent.displayName;
-  console.log("intent:" + intent);
-  if (intent==appconstants.USER_AUTHENTICATION) {
-    findUser(req.body.firstName, req.body.pin, res);
-  } else if (intent==appconstants.CREATE_REQUEST) {
-    createRequest(req, res);
-  } else {
-    console.log("no intent matched");
-    res.send("no intent matched.");
+//Request Controller
+//Action 1 -> create request
+//Action 2 -> fetch pending requests
+//Action 3 -> approve request
+
+
+
+function findUser(userName, pin, res){
+  appconstants.DATABASE.collection("user").find({"username":userName, "pin":pin}).toArray(function(err, results) {
+    if (results.length == 0) {
+      res.statusCode = 404;
+      res.setHeader('Content-Type', 'application/json');
+      res.send("you are not authorized to login");
+    } else {
+      res.statusCode = 200;
+      res.setHeader('Content-Type', 'application/plain');
+      res.send(JSON.stringify(results));
+    }
+  });
+}
+
+/*var serverModule = {
+  defineRoutes: function(router){
+
   }
-});
-
-
-function findUser(firstName, pin, res){
-  database.collection("user").find({"firstName":firstName, "pin":pin}).toArray(function(err, results) {
-    if (results.length == 0) {
-      res.statusCode = 404;
-      res.setHeader('Content-Type', 'application/json');
-      res.send("you are not authorized to login");
-    } else {
-      res.statusCode = 200;
-      res.setHeader('Content-Type', 'application/plain');
-      res.send(JSON.stringify(results));
-    }
-  });
 }
-
-function createRequest(req, res){
-  database.collection("user").find({"firstName":firstName, "pin":pin}).toArray(function(err, results) {
-    if (results.length == 0) {
-      res.statusCode = 404;
-      res.setHeader('Content-Type', 'application/json');
-      res.send("you are not authorized to login");
-    } else {
-      res.statusCode = 200;
-      res.setHeader('Content-Type', 'application/plain');
-      res.send(JSON.stringify(results));
-    }
-  });
-}
+module.exports = serverModule;*/
 
 app.listen(port, () => console.log(`Example app listening on port ${port}!`));
