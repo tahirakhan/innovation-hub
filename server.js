@@ -19,44 +19,15 @@ mongoClient.connect(dbUrl, {useNewUrlParser: true}, function(err, client){
     appconstants.DATABASE = client.db("vroozi");
   }
 })
-
-
 //declare controllers and binding here
 //FAQ Controller
 const faqController = require('./controller/faqController');
 app.use('/faq',faqController);
 const userController = require('./controller/userController');
 app.use('/user',userController);
-
+const supplierController = require('./controller/supplierController');
+app.use('/supplier',supplierController);
 const rfqController = require('./controller/rfqController');
 app.use('/rfq', rfqController);
-
-//Request Controller
-//Action 1 -> create request
-//Action 2 -> fetch pending requests
-//Action 3 -> approve request
-
-
-
-function findUser(userName, pin, res){
-  appconstants.DATABASE.collection("user").find({"username":userName, "pin":pin}).toArray(function(err, results) {
-    if (results.length == 0) {
-      res.statusCode = 404;
-      res.setHeader('Content-Type', 'application/json');
-      res.send("you are not authorized to login");
-    } else {
-      res.statusCode = 200;
-      res.setHeader('Content-Type', 'application/plain');
-      res.send(JSON.stringify(results));
-    }
-  });
-}
-
-/*var serverModule = {
-  defineRoutes: function(router){
-
-  }
-}
-module.exports = serverModule;*/
 
 app.listen(port, () => console.log(`Example app listening on port ${port}!`));
