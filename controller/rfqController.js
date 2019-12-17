@@ -5,7 +5,7 @@ var fs = require("fs");
 var appconstants = require('../appconstants');
 
 router.post("/", (req, res) => {
-    console.log(req.body);
+    res.statusCode = 200;
     createRfq(res, req.body);
   });
 
@@ -13,13 +13,13 @@ router.post("/", (req, res) => {
     var contents = fs.readFileSync("./templates/rfq_form_template.json");
     var jsonContent = JSON.parse(contents);
     jsonContent.suppliers = [];
-    var supplier = findSupplier(requestBody.uniqueSupplierId);
+    var supplier = findSupplier(requestBody.supplierName);
     supplier.then(function(value) {
       jsonContent.suppliers.push(value);
     }).catch(function () {
-      res.send("Supllier Not Found");
+      res.send(JSON.stringify({"status": 204, "result": "Supplier Not Found"}));
     }).then(function(){
-      var requester =  findUser(requestBody.userId);
+      var requester =  findUser(requestBody.firstName, requestBody.smartPin);
       requester.then(function(value) {
         jsonContent.requesterId = value.userId;
         jsonContent.unitId = value.unitId;
@@ -30,30 +30,33 @@ router.post("/", (req, res) => {
         jsonContent.submittedDate = new Date();
         
         var nextRfqSequence = getNextRfqNumber();
-        nextRfqSequence.then(function(value) {
+        nextRfqSequence.then(function(Sequence) {
           var quoteItem = jsonContent.quoteItems[0]; 
-          quoteItem.description = requestBody.itemDescription;
-          quoteItem.qty = requestBody.itemQty;
-          quoteItem.deliveryDate = new Date(requestBody.deliveryDate);
+          quoteItem.description = requestBody.item;
+          quoteItem.qty = requestBody.quantity;
+          if (requestBody.deliveryDate != null) {
+            quoteItem.deliveryDate = new Date(requestBody.deliveryDate);
+          } else {
+            quoteItem.deliveryDate = new Date();
+          }
           // console.log(JSON.stringify(quoteItem));
-          jsonContent.requestNumber = ""+value.value;
-          jsonContent.requestName = "RF"+ value.value;
+          jsonContent.requestNumber = ""+Sequence.value;
+          jsonContent.requestName = "RF"+ Sequence.value;
           appconstants.DATABASE.collection("quote_request_forms").insertOne(jsonContent, function(err, res) {
             if (err) throw err;
             console.log("RFQ document inserted");
           });
-          res.send("RFQ document Created And Document Number is " + value.value);
-          // res.send(jsonContent)          
+          res.send(JSON.stringify({"status": 200, "result": Sequence.value}));          
         })
       }).catch(function () {
-        res.send("User Not Found");
+        res.send(JSON.stringify({"status": 204, "result": "User Not Found"}));
       })
     });
   }
 
-function findUser(userId) {
+function findUser(firstName, smartPin) {
   return new Promise(function(resolve, reject) {
-    appconstants.DATABASE.collection("user").findOne({"userId" : userId}, function(err, result) {
+    appconstants.DATABASE.collection("user").findOne({"firstName":firstName, "smartPin":smartPin}, function(err, result) {
       if (result != null) {
        resolve(result);
       } else {
@@ -63,9 +66,9 @@ function findUser(userId) {
   });
 } 
 
-function findSupplier(uniqueSupplierId) {
+function findSupplier(supplierName) {
   return new Promise(function(resolve, reject) {
-    appconstants.DATABASE.collection("supplier").findOne({"uniqueSupplierId" : uniqueSupplierId}, function(err, result) {
+    appconstants.DATABASE.collection("supplier").findOne({"companyName" : supplierName}, function(err, result) {
       if (result != null) {
        resolve(result);
       } else {
