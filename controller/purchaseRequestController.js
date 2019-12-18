@@ -12,7 +12,8 @@ function getPurchaseRequest(body, res){
     if (result == null) {
       res.statusCode = 200;
       res.setHeader('Content-Type', 'application/json');
-      res.send(JSON.stringify({"status": 204}));
+      console.log("invalid orderNumber");
+      res.send(JSON.stringify({"status": 204, "msg": "invalid orderNumber"}));
     } else {
       res.statusCode = 200;
       res.setHeader('Content-Type', 'application/plain');
@@ -20,7 +21,9 @@ function getPurchaseRequest(body, res){
         "orderNumber": body.orderNumber,
         "status": 200,
         "requestStatus": result.status,
-        "requester": result.requester
+        "requester": result.requester,
+        "total": "$"+result.totalAmount,
+        "requestName": result.name
       };
       res.send(responseData);
     }
@@ -34,10 +37,11 @@ router.put("/", (req, res) => {
 function updatePurchaseRequest(body, res){
   res.statusCode = 200;
   res.setHeader('Content-Type', 'application/plain');
-  appconstants.DATABASE.collection("purchase_requests").findOne({"orderNumber":body.orderNumber}, function(err, result) {
-    if (result == null) {
+  appconstants.DATABASE.collection("purchase_requests").findOne({"orderNumber":body.orderNumber}, function(err, purchaseRequest) {
+    if (purchaseRequest == null) {
+      console.log("invalid orderNumber");
       res.setHeader('Content-Type', 'application/json');
-      res.send(JSON.stringify({"status": 204, "msg": "purchase request not found"}));
+      res.send(JSON.stringify({"status": 204, "msg": "invalid orderNumber"}));
     } else {
       appconstants.DATABASE.collection("user").findOne({"firstName":body.firstName, "smartPin":body.smartPin}, function(err, result) {
         if (result != null) {
@@ -58,16 +62,21 @@ function updatePurchaseRequest(body, res){
           };
           appconstants.DATABASE.collection("purchase_requests").updateOne(query, updatedValues, function(err, updateResult) {
             if (err) throw err;
-            console.log("request updated ");
-
-
-            var responseData = {"orderNumber": body.orderNumber, "status": 200, "requestStatus": "APPROVED"};
+            var responseData = {
+              "orderNumber": body.orderNumber,
+              "status": 200,
+              "requestStatus": "APPROVED",
+              "requester": purchaseRequest.requester,
+              "total": "$"+purchaseRequest.totalAmount,
+              "requestName": purchaseRequest.name
+            };
+            console.log("purchase request updated successfully");
             res.send(responseData);
-
           });
         } else {
           res.setHeader('Content-Type', 'application/json');
-          res.send(JSON.stringify({"status": 204, "msg": "approver not found"}));
+          console.log("invalid approver");
+          res.send(JSON.stringify({"status": 204, "msg": "invalid approver"}));
         }
       });
     }
