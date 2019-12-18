@@ -29,5 +29,7 @@ const supplierController = require('./controller/supplierController');
 app.use('/supplier',supplierController);
 const rfqController = require('./controller/rfqController');
 app.use('/rfq', rfqController);
+const purchaseRequestController = require('./controller/purchaseRequestController');
+app.use('/purchase-request', purchaseRequestController);
 
 app.listen(port, () => console.log(`Example app listening on port ${port}!`));
