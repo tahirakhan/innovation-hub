@@ -3,7 +3,7 @@ const app = express();
 const router = express.Router();
 var appconstants = require('../appconstants');
 
-router.get("/", (req, res) => {
+router.post("/", (req, res) => {
   console.log(req.body);
   getPurchaseRequest(req.body, res);
 });
