@@ -8,7 +8,7 @@ router.get("/", (req, res) => {
   getPurchaseRequest(req.body, res);
 });
 function getPurchaseRequest(body, res){
-  appconstants.DATABASE.collection("purchase_requests").findOne({"orderNumber":body.orderNumber}, function(err, result) {
+  appconstants.DATABASE.collection("purchase_requests").findOne({"orderNumber": { "$regex": body.orderNumber+"\\b" } }, function(err, result) {
     if (result == null) {
       res.statusCode = 200;
       res.setHeader('Content-Type', 'application/json');
@@ -37,7 +37,7 @@ router.put("/", (req, res) => {
 function updatePurchaseRequest(body, res){
   res.statusCode = 200;
   res.setHeader('Content-Type', 'application/plain');
-  appconstants.DATABASE.collection("purchase_requests").findOne({"orderNumber":body.orderNumber}, function(err, purchaseRequest) {
+  appconstants.DATABASE.collection("purchase_requests").findOne({"orderNumber":{ "$regex": body.orderNumber+"\\b" } }, function(err, purchaseRequest) {
     if (purchaseRequest == null) {
       console.log("invalid orderNumber");
       res.setHeader('Content-Type', 'application/json');
@@ -45,7 +45,7 @@ function updatePurchaseRequest(body, res){
     } else {
       appconstants.DATABASE.collection("user").findOne({"firstName":body.firstName, "smartPin":body.smartPin}, function(err, result) {
         if (result != null) {
-          var query = {"orderNumber":body.orderNumber};
+          var query = {"orderNumber":purchaseRequest.orderNumber};
           var updatedValues = {
             $set:
                 {"status": "APPROVED",
